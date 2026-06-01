@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import BookList from "../components/books/BookList";
+import BookListSkeleton from "../components/books/BookList-Skeleton";
 import Pagination from "../components/Pagination";
 import { useBook } from "../hooks/useBook";
 
@@ -55,6 +56,8 @@ const BooksPage = () => {
       page: 1,
     });
   };
+
+  console.log(state?.loading);
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -155,9 +158,13 @@ const BooksPage = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {state?.books?.map((book) => (
-                <BookList key={book._id} book={book} />
-              ))}
+              {state?.loading ? (
+                <BookListSkeleton length={8} count={4} />
+              ) : (
+                state?.books?.map((book) => (
+                  <BookList key={book._id} book={book} />
+                ))
+              )}
             </div>
 
             <div className="mt-8">
