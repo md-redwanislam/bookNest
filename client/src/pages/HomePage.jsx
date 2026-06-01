@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 
+import FeaturedSkeleton from "../components/books/Featured-Skeleton";
 import LatestBooks from "../components/books/FeaturedBooks";
 import { useBook } from "../hooks/useBook";
 
@@ -35,11 +36,6 @@ const HomePage = () => {
     fetchBooks();
   }, [dispatch]);
 
-  // !Loading
-  if (state?.loading) {
-    return <div> We are working...</div>;
-  }
-
   return (
     <>
       <section className="flex flex-col items-center justify-center">
@@ -56,7 +52,11 @@ const HomePage = () => {
           <h3 className="text-2xl font-semibold mb-8 text-center">
             Latest Books
           </h3>
-          <LatestBooks latestBooks={state?.books?.slice(0, 4)} />
+          {state?.loading ? (
+            <FeaturedSkeleton length={4} count={4} />
+          ) : (
+            <LatestBooks latestBooks={state?.books?.slice(0, 4)} />
+          )}
         </div>
       </section>
     </>
