@@ -67,7 +67,7 @@ A full-stack MERN-based online bookstore that allows users to browse, search, an
 
 #Clone the repository
 
-git clone https://github.com/md-redwanislam/Book-store
+git clone https://github.com/md-redwanislam/bookNest
 
 #Install frontend dependencies
 
