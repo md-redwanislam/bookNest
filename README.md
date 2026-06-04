@@ -67,7 +67,7 @@ A full-stack MERN-based online bookstore that allows users to browse, search, an
 
 #Clone the repository
 
-git clone https://github.com/GoodBoy-420/bookNest
+git clone https://github.com/md-redwanislam/Book-store
 
 #Install frontend dependencies
 
@@ -249,7 +249,7 @@ This experience helped strengthen my understanding of:
 **Md. Redwan Islam**
 
 - 💼 Full-Stack MERN Developer
-- 🌐 Portfolio: https://goodboy-420.github.io/portfolio/
+- 🌐 Portfolio: https://md-redwanislam.github.io/portfolio/
 - 🔗 LinkedIn: https://linkedin.com/in/md-redwan-islam/
 - 📧 Email: [riadislam9117@gmail.com](mailto:riadislam9117@gmail.com?subject=Regarding%20BookNest%20Project)
 
