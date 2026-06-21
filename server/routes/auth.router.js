@@ -11,5 +11,6 @@ router.route("/refresh-token").post(catchAsync(AuthController.refreshToken));
 router.route("/email-verify").post(catchAsync(AuthController.emailVerify));
 router.route("/otp-verify").post(catchAsync(AuthController.otpVerify));
 router.route("/reset-password").post(catchAsync(AuthController.resetPassword));
+router.route("/logout").post(catchAsync(AuthController.logOut));
 
 export default router;

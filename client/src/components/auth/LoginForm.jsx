@@ -22,7 +22,9 @@ const LoginForm = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/login`,
         formObject,
+        { withCredentials: true },
       );
+
       const data = response.data;
 
       if (!data.success) {
@@ -32,8 +34,7 @@ const LoginForm = () => {
       const { user, token } = data.data;
       const authData = {
         user,
-        authToken: token.token,
-        refreshToken: token.refreshToken,
+        authToken: token,
       };
 
       setAuth(authData);

@@ -57,8 +57,6 @@ const BooksPage = () => {
     });
   };
 
-  console.log(state?.loading);
-
   return (
     <div className="min-h-screen bg-white text-gray-800">
       <section className="max-w-7xl mx-auto px-4 py-10">

@@ -47,4 +47,6 @@ const dataSchema = new Schema(
   },
 );
 
+dataSchema.index({ title: 1 }, { unique: true });
+
 export const BookModel = mongoose.model("books", dataSchema);

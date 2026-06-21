@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { api } from "../components/api/index.js";
 import { useAuth } from "./useAuth";
@@ -31,17 +30,13 @@ const useAxios = () => {
           originalRequest._retry = true;
 
           try {
-            const refreshToken = auth?.refreshToken;
-            const response = await axios.post(
-              `${import.meta.env.VITE_BASE_URL}/auth/refresh-token`,
-              { refreshToken },
-            );
-            const { token } = response.data.data;
+            const response = await api.post(`/auth/refresh-token`);
+
+            const { data } = response.data;
 
             const updatedAuth = {
               ...auth,
-              authToken: token.token,
-              refreshToken: token.refreshToken,
+              authToken: data,
             };
             setAuth(updatedAuth);
 
@@ -49,7 +44,7 @@ const useAxios = () => {
 
             // Retry the original request with the new token
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            return axios(originalRequest);
+            return api(originalRequest);
           } catch (error) {
             throw error;
           }

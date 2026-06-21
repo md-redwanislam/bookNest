@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import mongoSanitize from "express-mongo-sanitize";
@@ -40,9 +41,11 @@ app.use(hpp());
 app.use(
   cors({
     origin: config.cors.origin,
-    // credentials: true,
+    credentials: true,
   }),
 );
+
+app.use(cookieParser());
 
 app.use(checkAuth);
 

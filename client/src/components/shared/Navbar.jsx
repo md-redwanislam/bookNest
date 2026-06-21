@@ -5,6 +5,7 @@ import Cart from "../../assets/cart.svg";
 import Logo from "../../assets/logo.svg";
 import Menu from "../../assets/menu.svg";
 import { useAuth } from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 import { useCart } from "../../hooks/useCart";
 
 const Navbar = () => {
@@ -13,11 +14,18 @@ const Navbar = () => {
 
   const { auth, setAuth } = useAuth();
   const { state } = useCart();
+  const { api } = useAxios();
 
-  const logOutHandler = () => {
-    localStorage.removeItem("booknest_auth");
-    setAuth({});
-    window.location.href = "/";
+  const logOutHandler = async () => {
+    try {
+      await api.post(`/auth/logout`);
+
+      localStorage.removeItem("booknest_auth");
+      setAuth({});
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

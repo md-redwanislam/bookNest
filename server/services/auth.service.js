@@ -46,14 +46,14 @@ const login = async (email, password) => {
     throw err;
   }
 
-  const token = await getNewToken(user);
+  const { token, refreshToken } = await getNewToken(user);
 
   user.password = undefined;
   user.otp = undefined;
   user.password = undefined;
   user._id = undefined;
 
-  return { user, token };
+  return { user, token, refreshToken };
 };
 
 const refreshToken = async (refreshToken) => {
@@ -76,9 +76,9 @@ const refreshToken = async (refreshToken) => {
     throw err;
   }
 
-  const token = getNewToken(user);
+  const { token, refreshToken: newRefreshToken } = await getNewToken(user);
 
-  return token;
+  return { token, newRefreshToken };
 };
 
 const emailVerify = async (email) => {

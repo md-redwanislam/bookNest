@@ -27,16 +27,42 @@ const login = async (req, res) => {
       message: "Please provide email and password",
     });
   }
-  const result = await AuthServices.login(email, password);
+  const { user, token, refreshToken } = await AuthServices.login(
+    email,
+    password,
+  );
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   res.status(200).send({
     success: true,
-    data: result,
+    data: {
+      user,
+      token,
+    },
+  });
+};
+
+const logOut = async (req, res) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
   });
 };
 
 const refreshToken = async (req, res) => {
-  const { refreshToken } = req.body || "";
+  const refreshToken = req.cookies.refreshToken || "";
 
   if (!refreshToken) {
     return res.status(404).json({
@@ -45,11 +71,19 @@ const refreshToken = async (req, res) => {
     });
   }
 
-  const result = await AuthServices.refreshToken(refreshToken);
+  const { token, newRefreshToken } =
+    await AuthServices.refreshToken(refreshToken);
+
+  res.cookie("refreshToken", newRefreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   res.status(200).send({
     seuccess: true,
-    data: result,
+    data: token,
   });
 };
 
@@ -109,4 +143,12 @@ const resetPassword = async (req, res) => {
   });
 };
 
-export { emailVerify, login, otpVerify, refreshToken, register, resetPassword };
+export {
+  emailVerify,
+  login,
+  logOut,
+  otpVerify,
+  refreshToken,
+  register,
+  resetPassword,
+};
