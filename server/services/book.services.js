@@ -84,12 +84,17 @@ const getAllBooks = async (keyword = "", page = 1, author, categories = []) => {
     },
   ]);
 
+  const allCategories = await BookModel.distinct("category");
+  const allAuthors = await BookModel.distinct("author");
+
   return {
     total,
     page,
     limit,
     totalPages: Math.ceil(total / limit),
     books,
+    allCategories,
+    allAuthors,
   };
 };
 

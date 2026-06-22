@@ -1,9 +1,7 @@
-import Lottie from "lottie-react";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-import ImagePlaceholder from "../../assets/book-skeleton.json";
-
-const FeaturedSkeleton = ({ length, count }) => {
+const FeaturedSkeleton = ({ length }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {Array.from({ length: length }).map((_, i) => (
@@ -11,14 +9,17 @@ const FeaturedSkeleton = ({ length, count }) => {
           key={i}
           className="flex flex-col bg-white w-72 shadow-sm hover:shadow-md"
         >
-          <Lottie
-            className="w-72 h-48 object-cover"
-            animationData={ImagePlaceholder}
-            loop
-          />
+          <Skeleton height={192} borderRadius={0} />
 
           <div className="p-4 text-sm">
-            <Skeleton count={count} />
+            <Skeleton width="30%" height={14} />
+            <Skeleton width="80%" height={16} style={{ marginTop: 6, marginBottom: 6 }} />
+            <Skeleton width="60%" height={14} />
+            <Skeleton width="50%" height={16} style={{ marginTop: 8, marginBottom: 8 }} />
+            <div className="grid grid-cols-2 gap-2 mt-3">
+              <Skeleton height={36} />
+              <Skeleton height={36} />
+            </div>
           </div>
         </div>
       ))}

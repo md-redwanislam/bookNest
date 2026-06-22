@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import BookList from "../components/books/BookList";
@@ -16,6 +16,26 @@ const BooksPage = () => {
   // const maxPrice = searchParams.get("maxPrice");
   const categories = searchParams.get("categories");
   const author = searchParams.get("author");
+  const selectedCategories = categories ? categories.split(",") : [];
+
+  const [searchInput, setSearchInput] = useState(keyword);
+  const debounceTimer = useRef(null);
+
+  const handleSearch = useCallback((value) => {
+    setSearchInput(value);
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      updateParams({ keyword: value });
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    setSearchInput(keyword);
+  }, [keyword]);
+
+  useEffect(() => {
+    return () => clearTimeout(debounceTimer.current);
+  }, []);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -132,35 +152,30 @@ const BooksPage = () => {
               <h6 className="text-sm font-semibold text-gray-900 mb-3">
                 Categories
               </h6>
-              <ul className="space-y-3">
-                {[...new Set(state?.books?.map((b) => b.category))].map(
-                  (category, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        value={category}
-                        onChange={(e) => {
-                          const selected = searchParams.get("categories")
-                            ? searchParams.get("categories").split(",")
-                            : [];
+              <ul className="space-y-3 max-h-48 overflow-y-auto pr-2">
+                {state?.allCategories?.map((category, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      value={category}
+                      checked={selectedCategories.includes(category)}
+                      onChange={(e) => {
+                        const selected = [...selectedCategories];
 
-                          if (e.target.checked) {
-                            selected.push(category);
-                          } else {
-                            const i = selected.indexOf(category);
-                            if (i > -1) selected.splice(i, 1);
-                          }
+                        if (e.target.checked) {
+                          selected.push(category);
+                        } else {
+                          const i = selected.indexOf(category);
+                          if (i > -1) selected.splice(i, 1);
+                        }
 
-                          updateParams({ categories: selected.join(",") });
-                        }}
-                        className="w-4 h-4"
-                      />
-                      <label className="text-sm text-gray-600">
-                        {category}
-                      </label>
-                    </li>
-                  ),
-                )}
+                        updateParams({ categories: selected.join(",") });
+                      }}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm text-gray-600">{category}</label>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -170,23 +185,22 @@ const BooksPage = () => {
               <h6 className="text-sm font-semibold text-gray-900 mb-3">
                 Authors
               </h6>
-              <ul className="space-y-3">
-                {[...new Set(state?.books?.map((b) => b.author))].map(
-                  (author, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name="author"
-                        value={author}
-                        onChange={(e) =>
-                          updateParams({ author: e.target.value })
-                        }
-                        className="w-4 h-4"
-                      />
-                      <label className="text-sm text-gray-600">{author}</label>
-                    </li>
-                  ),
-                )}
+              <ul className="space-y-3 max-h-48 overflow-y-auto pr-2">
+                {state?.allAuthors?.map((authorName, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="author"
+                      value={authorName}
+                      checked={author === authorName}
+                      onChange={(e) => updateParams({ author: e.target.value })}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm text-gray-600">
+                      {authorName}
+                    </label>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -194,8 +208,8 @@ const BooksPage = () => {
           <div className="flex-1">
             <div className="mb-6">
               <input
-                value={keyword}
-                onChange={(e) => updateParams({ keyword: e.target.value })}
+                value={searchInput}
+                onChange={(e) => handleSearch(e.target.value)}
                 type="text"
                 placeholder="Search books, description..."
                 className="w-full md:w-1/2 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -204,7 +218,7 @@ const BooksPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {state?.loading ? (
-                <BookListSkeleton length={8} count={4} />
+                <BookListSkeleton length={8} />
               ) : (
                 state?.books?.map((book) => (
                   <BookList key={book._id} book={book} />

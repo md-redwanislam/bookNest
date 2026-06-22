@@ -3,6 +3,8 @@ const initialState = {
   page: 1,
   total: 1,
   totalPages: 1,
+  allCategories: [],
+  allAuthors: [],
   loading: false,
   error: null,
 };
@@ -22,6 +24,8 @@ const bookReducer = (state, action) => {
         page: action.data.page,
         total: action.data.total,
         totalPages: action.data.totalPages,
+        allCategories: action.data.allCategories || state.allCategories,
+        allAuthors: action.data.allAuthors || state.allAuthors,
         loading: false,
       };
     }

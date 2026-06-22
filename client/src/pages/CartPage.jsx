@@ -10,7 +10,39 @@ const CartPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   if (state.totalItems <= 0) {
-    return <p>Cart is empty</p>;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 px-6 max-w-6xl mx-auto text-center">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-gray-300 mb-6"
+        >
+          <path
+            d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3 6h18M16 10a4 4 0 1 1-8 0"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <h2 className="text-2xl font-semibold text-slate-900 mb-2">
+          Your cart is empty
+        </h2>
+        <p className="text-slate-500 mb-8 max-w-md">
+          Looks like you haven't added any books yet. Browse our collection and
+          find your next great read.
+        </p>
+        <Link
+          to="/books"
+          className="px-8 py-3 bg-primary hover:bg-cyan-800 text-white font-medium transition"
+        >
+          Browse Books
+        </Link>
+      </div>
+    );
   }
 
   return (

@@ -2,13 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import BookList from "../components/books/BookList";
+import BookListSkeleton from "../components/books/BookList-Skeleton";
 import Ratings from "../components/books/Ratings";
 import { useCart } from "../hooks/useCart";
 
 const GetSingleBook = () => {
   let { bookId } = useParams();
   const [book, setBook] = useState([]);
-  const { addToCart } = useCart();
+  const [suggestedBooks, setSuggestedBooks] = useState([]);
+  const [suggestedLoading, setSuggestedLoading] = useState(false);
+  const { addToCart, state, updateQuantity, removeItem } = useCart();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -24,6 +28,31 @@ const GetSingleBook = () => {
 
     fetchBooks();
   }, [bookId]);
+
+  useEffect(() => {
+    const category = book?.[0]?.category;
+    if (!category) return;
+
+    const fetchSuggestedBooks = async () => {
+      setSuggestedLoading(true);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/book/get-all`,
+          { params: { categories: category } },
+        );
+        const filtered = response.data.data.books.filter(
+          (b) => b._id !== book[0]._id,
+        );
+        setSuggestedBooks(filtered);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setSuggestedLoading(false);
+      }
+    };
+
+    fetchSuggestedBooks();
+  }, [book]);
 
   return (
     <div className="p-4 bg-gray-100">
@@ -111,15 +140,75 @@ const GetSingleBook = () => {
 
               <div>
                 <div className="mt-4 flex flex-wrap gap-4">
-                  <button
-                    onClick={() =>
-                      addToCart(book[0]._id, book[0].price, book[0].title)
-                    }
-                    type="button"
-                    className="px-4 py-3 w-[45%] cursor-pointer border border-gray-300 bg-white hover:bg-cyan-800 text-slate-900 text-sm font-medium"
-                  >
-                    Add to cart
-                  </button>
+                  {(() => {
+                    const cartItem = state.items.find(
+                      (item) =>
+                        (typeof item.book === "string"
+                          ? item.book
+                          : item.book?._id) === book[0]._id
+                    );
+                    return cartItem ? (
+                      <div className="flex items-center gap-3 px-4 py-3 w-[45%] border border-gray-300 bg-white justify-center">
+                        {cartItem.quantity === 1 ? (
+                          <button
+                            onClick={() => removeItem(cartItem.book)}
+                            className="w-8 h-8 border border-gray-300 hover:cursor-pointer flex items-center justify-center"
+                          >
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="m12.5 7.5-5 5m0-5 5 5m5.833-2.5a8.333 8.333 0 1 1-16.667 0 8.333 8.333 0 0 1 16.667 0"
+                                stroke="#FF532E"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              updateQuantity(cartItem.book, "dec")
+                            }
+                            className="w-8 h-8 border border-gray-300 hover:cursor-pointer"
+                          >
+                            -
+                          </button>
+                        )}
+                        <span className="text-sm font-medium">
+                          {cartItem.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(cartItem.book, "inc")
+                          }
+                          className="w-8 h-8 border border-gray-300 hover:cursor-pointer"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          addToCart(
+                            book[0]._id,
+                            book[0].price,
+                            book[0].title,
+                            book[0].coverImage
+                          )
+                        }
+                        type="button"
+                        className="px-4 py-3 w-[45%] cursor-pointer border border-gray-300 bg-white hover:bg-cyan-800 text-slate-900 text-sm font-medium"
+                      >
+                        Add to cart
+                      </button>
+                    );
+                  })()}
                   {/* <button
                   type="button"
                   className="px-4 py-3 w-[45%] cursor-pointer border border-purple-600 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium"
@@ -130,6 +219,26 @@ const GetSingleBook = () => {
               </div>
 
               <hr className="my-6 border-gray-300" />
+            </div>
+          </div>
+
+          {/* Suggested Books */}
+          <div className="mt-12">
+            <h3 className="text-xl font-semibold text-slate-900 mb-6">
+              More in {book[0]?.category}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {suggestedLoading ? (
+                <BookListSkeleton length={4} />
+              ) : suggestedBooks.length > 0 ? (
+                suggestedBooks
+                  .slice(0, 4)
+                  .map((b) => <BookList key={b._id} book={b} />)
+              ) : (
+                <p className="text-slate-500 text-sm">
+                  No other books found in this category.
+                </p>
+              )}
             </div>
           </div>
         </div>

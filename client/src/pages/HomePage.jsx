@@ -54,7 +54,7 @@ const HomePage = () => {
             Latest Books
           </h3>
           {state?.loading ? (
-            <FeaturedSkeleton length={4} count={4} />
+            <FeaturedSkeleton length={4} />
           ) : (
             <LatestBooks latestBooks={state?.books?.slice(0, 4)} />
           )}
