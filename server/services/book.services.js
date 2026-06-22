@@ -82,14 +82,14 @@ const getAllBooks = async (keyword = "", page = 1, author, categories = []) => {
     },
   ]);
 
-  const total = await BookModel.countDocuments(matchQuery);
-
   return {
     total,
     page,
     limit,
     totalPages: Math.ceil(total / limit),
     books,
+    allCategories,
+    allAuthors,
   };
 };
 
