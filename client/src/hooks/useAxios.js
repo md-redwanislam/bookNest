@@ -10,7 +10,7 @@ const useAxios = () => {
     const requestIntercept = api.interceptors.request.use(
       (config) => {
         const authToken = auth?.authToken;
-        if (authToken) {
+        if (authToken && !config._retry) {
           config.headers.Authorization = `Bearer ${authToken}`;
         }
         return config;
@@ -30,9 +30,10 @@ const useAxios = () => {
           originalRequest._retry = true;
 
           try {
+            const cookies = document.cookie;
             const response = await api.post(`/auth/refresh-token`);
 
-            const { data } = response.data;
+            const { data } = response?.data;
 
             const updatedAuth = {
               ...auth,
@@ -43,10 +44,13 @@ const useAxios = () => {
             localStorage.setItem("booknest_auth", JSON.stringify(updatedAuth));
 
             // Retry the original request with the new token
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+            originalRequest.headers.Authorization = `Bearer ${data}`;
             return api(originalRequest);
           } catch (error) {
-            throw error;
+            setAuth(null);
+            localStorage.removeItem("booknest_auth");
+            window.location.href = "/login";
+            return Promise.reject(error);
           }
         }
 

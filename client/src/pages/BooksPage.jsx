@@ -59,6 +59,53 @@ const BooksPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
+      <>
+        <>
+          <title>Browse Books Online | Fiction, Science, History & More</title>
+
+          <meta
+            name="description"
+            content="Explore our collection of books across Fiction, Science, History, Business, Self-Help and more. Find your next favorite book today."
+          />
+
+          <link
+            rel="canonical"
+            href={`${import.meta.env.VITE_CLIENT_URL}/books`}
+          />
+
+          {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Browse Books Online | BookNest" />
+          <meta
+            property="og:description"
+            content="Discover thousands of books from top authors and categories. Shop bestsellers, classics, and new releases."
+          />
+          <meta
+            property="og:url"
+            content={`${import.meta.env.VITE_CLIENT_URL}/books`}
+          />
+          <meta
+            property="og:image"
+            content={`${import.meta.env.VITE_CLIENT_URL}/book-store-banner.jpg`}
+          />
+          <meta property="og:site_name" content="BookNest" />
+
+          {/* Twitter/X */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Browse Books Online | BookNest" />
+          <meta
+            name="twitter:description"
+            content="Explore books from popular authors and categories."
+          />
+          <meta
+            name="twitter:image"
+            content={`${import.meta.env.VITE_CLIENT_URL}/book-store-banner.jpg`}
+          />
+
+          {/* SEO */}
+          <meta name="robots" content="index,follow" />
+        </>
+      </>
       <section className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex flex-col md:flex-row gap-5">
           {/* Sidebar */}

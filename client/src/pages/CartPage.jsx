@@ -18,6 +18,44 @@ const CartPage = () => {
       {showModal && <CheckoutModal onClose={() => setShowModal(false)} />}
 
       <div className="flex flex-col md:flex-row py-16 max-w-6xl w-full px-6 mx-auto">
+        <>
+          <>
+            <title>Shopping Cart | BookNest</title>
+
+            <meta
+              name="description"
+              content="Review the books in your shopping cart and proceed to secure checkout at BookNest."
+            />
+
+            <link
+              rel="canonical"
+              href={`${import.meta.env.VITE_CLIENT_URL}/cart`}
+            />
+
+            {/* Open Graph */}
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Shopping Cart | BookNest" />
+            <meta
+              property="og:description"
+              content="Review your selected books and complete your purchase at BookNest."
+            />
+            <meta
+              property="og:url"
+              content={`${import.meta.env.VITE_CLIENT_URL}/cart`}
+            />
+
+            {/* Twitter/X */}
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:title" content="Shopping Cart | BookNest" />
+            <meta
+              name="twitter:description"
+              content="Review your selected books and complete your purchase."
+            />
+
+            {/* Important: Don't index cart pages */}
+            <meta name="robots" content="noindex,nofollow" />
+          </>
+        </>
         <div className="flex-1 max-w-4xl">
           <h1 className="text-3xl font-medium mb-6">
             Cart List{" "}

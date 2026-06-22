@@ -1,6 +1,53 @@
 const ContactPage = () => {
   return (
     <div className="max-w-7xl max-lg:max-w-3xl mx-auto p-4 md:p-8">
+      <>
+        <>
+          <title>Contact Us | BookNest</title>
+
+          <meta
+            name="description"
+            content="Get in touch with BookNest. Contact us for book inquiries, orders, support, partnerships, or any questions. We're here to help."
+          />
+
+          <link
+            rel="canonical"
+            href={`${import.meta.env.VITE_CLIENT_URL}/contact`}
+          />
+
+          {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Contact Us | BookNest" />
+          <meta
+            property="og:description"
+            content="Need help or have a question? Contact BookNest and we'll get back to you as soon as possible."
+          />
+          <meta
+            property="og:url"
+            content={`${import.meta.env.VITE_CLIENT_URL}/contact`}
+          />
+          <meta
+            property="og:image"
+            content={`${import.meta.env.VITE_CLIENT_URL}/contact-banner.jpg`}
+          />
+          <meta property="og:site_name" content="BookNest" />
+
+          {/* Twitter/X */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Contact Us | BookNest" />
+          <meta
+            name="twitter:description"
+            content="Reach out to BookNest for support, inquiries, and assistance."
+          />
+          <meta
+            name="twitter:image"
+            content={`${import.meta.env.VITE_CLIENT_URL}/contact-banner.jpg`}
+          />
+
+          {/* SEO */}
+          <meta name="robots" content="index,follow" />
+        </>
+      </>
       <div className="grid lg:grid-cols-2 gap-8 items-start">
         <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
           <h2 className="text-3xl font-bold text-slate-900 mb-4">

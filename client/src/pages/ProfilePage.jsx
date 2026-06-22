@@ -22,6 +22,44 @@ const ProfilePage = () => {
 
   return (
     <div className="p-4">
+      <>
+        <>
+          <title>My Orders | BookNest</title>
+
+          <meta
+            name="description"
+            content="View and manage your order history, track purchases, and review previous book orders at BookNest."
+          />
+
+          <link
+            rel="canonical"
+            href={`${import.meta.env.VITE_CLIENT_URL}/profile`}
+          />
+
+          {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="My Orders | BookNest" />
+          <meta
+            property="og:description"
+            content="View your order history and purchase details."
+          />
+          <meta
+            property="og:url"
+            content={`${import.meta.env.VITE_CLIENT_URL}/profile`}
+          />
+
+          {/* Twitter/X */}
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:title" content="My Orders | BookNest" />
+          <meta
+            name="twitter:description"
+            content="Manage your BookNest order history."
+          />
+
+          {/* Important */}
+          <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+        </>
+      </>
       <div className="max-w-5xl mx-auto">
         <div className="border-b border-gray-300 pb-4">
           <h3 className="text-2xl font-semibold text-slate-900">
