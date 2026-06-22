@@ -29,6 +29,39 @@ const GetSingleBook = () => {
     <div className="p-4 bg-gray-100">
       {book && book.length > 0 && (
         <div className="lg:max-w-6xl max-w-xl mx-auto">
+          <>
+            <title>{book?.[0]?.title || "Book Details"}</title>
+
+            <meta
+              name="description"
+              content={book?.[0]?.description || "Book information"}
+            />
+
+            <link
+              rel="canonical"
+              href={`${import.meta.env.VITE_CLIENT_URL}/book/${book?.[0]?._id}`}
+            />
+
+            {/* Open Graph */}
+            <meta property="og:type" content="book" />
+            <meta property="og:title" content={book?.[0]?.title} />
+            <meta property="og:description" content={book?.[0]?.description} />
+            <meta property="og:image" content={book?.[0]?.coverImage} />
+            <meta
+              property="og:url"
+              content={`${import.meta.env.VITE_CLIENT_URL}/book/${book?.[0]?._id}`}
+            />
+            <meta property="og:site_name" content="Your Book Store" />
+
+            {/* Twitter/X */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={book?.[0]?.title} />
+            <meta name="twitter:description" content={book?.[0]?.description} />
+            <meta name="twitter:image" content={book?.[0]?.coverImage} />
+
+            {/* SEO */}
+            <meta name="robots" content="index,follow" />
+          </>
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-12 max-sm:gap-8">
             <div className="w-full lg:sticky top-0">
               <div className="flex flex-col gap-4">

@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Email from "../../assets/email.svg";
 import Lock from "../../assets/lock.svg";
 import { useAuth } from "../../hooks/useAuth";
+import { api } from "../api";
 
 const LoginForm = () => {
   const { setAuth } = useAuth();
@@ -19,10 +19,9 @@ const LoginForm = () => {
       const formData = new FormData(e.target);
       const formObject = Object.fromEntries(formData.entries());
 
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BASE_URL}/auth/login`,
         formObject,
-        { withCredentials: true },
       );
 
       const data = response.data;

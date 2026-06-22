@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +5,7 @@ import Email from "../../assets/email.svg";
 import Lock from "../../assets/lock.svg";
 import Name from "../../assets/name.svg";
 import { useAuth } from "../../hooks/useAuth";
+import { api } from "../api";
 
 const RegistrtationForm = () => {
   const { setAuth } = useAuth();
@@ -20,7 +20,7 @@ const RegistrtationForm = () => {
       const formData = new FormData(e.target);
       const formObject = Object.fromEntries(formData.entries());
 
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BASE_URL}/auth/register`,
         formObject,
       );

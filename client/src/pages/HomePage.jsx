@@ -39,6 +39,7 @@ const HomePage = () => {
   return (
     <>
       <section className="flex flex-col items-center justify-center">
+        <meta name="description" content="An e-commerce site." />
         <h1 className="text-4xl md:text-6xl font-semibold text-gray-900 mt-4">
           Discover Your Next Favorite Book
         </h1>
