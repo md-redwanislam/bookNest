@@ -68,6 +68,8 @@ const getAllBooks = async (keyword = "", page = 1, author, categories = []) => {
     });
   }
 
+  const total = await BookModel.countDocuments(matchQuery);
+
   const books = await BookModel.aggregate([
     { $match: matchQuery },
     { $sort: { createdAt: -1 } },
@@ -81,6 +83,9 @@ const getAllBooks = async (keyword = "", page = 1, author, categories = []) => {
       },
     },
   ]);
+
+  const allCategories = await BookModel.distinct("category");
+  const allAuthors = await BookModel.distinct("author");
 
   return {
     total,
