@@ -49,7 +49,7 @@ const useAxios = () => {
           } catch (error) {
             setAuth(null);
             localStorage.removeItem("booknest_auth");
-            window.location.href = "/login";
+            window.location.href = "/signin";
             return Promise.reject(error);
           }
         }
