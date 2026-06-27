@@ -1,10 +1,7 @@
-import { connectDB } from "../configs/db.js";
 import * as BookServices from "../services/book.services.js";
 import { getAuthUser } from "../utils/getAuthUser.js";
 
 const getFeaturedBooks = async (req, res) => {
-  await connectDB();
-
   const result = await BookServices.getFeaturedBooks();
 
   res.status(200).send({
