@@ -1,3 +1,4 @@
+import { connectDB } from "../configs/db.js";
 import * as BookServices from "../services/book.services.js";
 import { getAuthUser } from "../utils/getAuthUser.js";
 
@@ -11,6 +12,7 @@ const getFeaturedBooks = async (req, res) => {
 };
 
 const getAllBooks = async (req, res) => {
+  await connectDB();
   const { keyword = "", page = 1, categories, author } = req.query;
 
   const categoryArray = categories ? categories.split(",") : [];
