@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import config from "../configs/config.js";
+import { connectDB } from "../configs/db.js";
 import { sendEmail } from "../libs/sendEmail.js";
 import { UserModel } from "../models/user.model.js";
 import getNewToken from "../utils/getNewToken.js";
@@ -30,6 +31,7 @@ const register = async (name, email, password) => {
 };
 
 const login = async (email, password) => {
+  await connectDB();
   const user = await UserModel.findOne({ email });
 
   if (!user) {
